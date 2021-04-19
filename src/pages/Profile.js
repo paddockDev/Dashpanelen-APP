@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { AtSymbolIcon } from '@heroicons/react/outline'
 import * as users from '../services/users'
 import Insights from '../components/Profile/Insights'
+import Stats from '../components/Profile/Stats'
 
 const Profile = () => {
   const [user, setUser] = useState()
@@ -51,23 +52,24 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <div
-            className="mt-6 lg:mt-0 flex-1 flex items-center justify-center px-5 border-t lg:border-0 border-gray-200 pt-5 lg:pt-0">
-            <div className="text-center rounded-md w-24 py-3">
-              <div
-                className="font-medium text-black text-xl"> 0
-              </div>
-              <div className="text-gray-600">Languages</div>
-            </div>
-            <div className="text-center rounded-md w-24 py-3">
-              <div
-                className="font-medium text-black text-xl"> 0
-              </div>
-              <div className="text-gray-600">Frameworks</div>
-            </div>
-          </div>
+          <Stats username={username}/>
         </div>
       </div>
+      {(() => {
+        if (user && user.data.profile.description !== "") {
+          return (
+            <div className="relative rounded-md border-transparent px-5 pt-5">
+              <div
+                className="flex flex-col lg:flex-row border-b border-gray-200 pb-5 -mx-5">
+                <div
+                  className="flex flex-1 px-5 items-center justify-center lg:justify-start">
+                  {user.data.profile.description}
+                </div>
+              </div>
+            </div>
+          )
+        }
+      })()}
       <Insights username={username}/>
     </div>
   )

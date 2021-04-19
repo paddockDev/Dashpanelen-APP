@@ -20,19 +20,23 @@ const Issues = () => {
         className="bg-white text-black w-full rounded-3xl shadow flex flex-col justify-between">
         <div className="text-center py-5">
           <ul className="p-0 m-0">
-            {issues && issues.data.map((issue) => {
-              return (
-                <li className="relative" key={issue.node.id}>
-                  <a href={issue.node.url} target="_blank" rel="noreferrer"
-                    className="flex w-full px-4 py-2 text-left justify-start items-center">
+            {issues && issues.data.length > 0 ? (
+              issues.data.map((issue) => {
+                return (
+                  <li className="relative" key={issue.node.id}>
+                    <a href={issue.node.url} target="_blank" rel="noreferrer"
+                       className="flex w-full px-4 py-2 text-left justify-start items-center">
                     <span
                       className="text-base font-sans block font-medium truncate">
                       {issue.node.title}
                     </span>
-                  </a>
-                </li>
-              )
-            })}
+                    </a>
+                  </li>
+                )
+              })
+            ) : (
+              <li className="relative">Currently you have no open issues on <a href="https://github.com/issues" rel="noreferrer" target="_blank">GitHub</a>.</li>
+            )}
           </ul>
         </div>
         <p

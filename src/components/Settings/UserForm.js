@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import Select from 'react-select'
 import * as me from '../../services/me'
-import { updateProfile } from '../../services/me'
-
 
 const UserForm = ({ user }) => {
-  const [currentUser, setCurrentUser] = useState({})
+  const [currentUser, setCurrentUser] = useState({
+    lang: user.data.profile.lang
+  })
 
   const options = [
     {
@@ -30,22 +30,21 @@ const UserForm = ({ user }) => {
     }
   ]
 
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     setCurrentUser((prevState) => ({
         ...prevState,
-        [e.target.name]: e.target.value
+      [e.target ? e.target.name : "lang"]: e.target ? e.target.value : e.value
       })
     )
   }
 
-  const [selectedValue, setSelectedValue] = useState(currentUser.lang || user.data.profile.lang)
-
-  const handleChange = e => {
-    setSelectedValue(e.value)
+  const handleUpdateUser = async (e) => {
+    e.preventDefault()
+    updateUser(currentUser)
   }
 
-  const updateUser = (e) => {
-    e.preventDefault()
+  const updateUser = async (data) => {
+    await me.updateProfile(data)
   }
 
   return (
@@ -60,7 +59,7 @@ const UserForm = ({ user }) => {
                    className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                    name="name" placeholder="Name"
                    value={currentUser.name || user.data.name}
-                   onChange={handleInputChange}/>
+                   onChange={handleChange}/>
           </div>
           <div className="mt-3">
             <label htmlFor="update-profile-username"
@@ -70,14 +69,14 @@ const UserForm = ({ user }) => {
                    className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                    name="username" placeholder="Username"
                    value={currentUser.username || user.data.username}
-                   onChange={handleInputChange}/>
+                   onChange={handleChange}/>
           </div>
           <div className="mt-3">
             <label htmlFor="update-profile-languages"
                    className="block text-sm font-medium text-gray-700">Language</label>
             <Select options={options} id="update-profile-languages" name="lang"
                     placeholder="Languages"
-                    value={options.find(obj => obj.value === selectedValue)}
+                    value={options.find(obj => obj.value === currentUser.lang)}
                     onChange={handleChange}/>
           </div>
           <div className="mt-3">
@@ -88,7 +87,7 @@ const UserForm = ({ user }) => {
                    className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                    placeholder="Job" name="job"
                    value={currentUser.job || user.data.profile.job}
-                   onChange={handleInputChange}/>
+                   onChange={handleChange}/>
           </div>
           <div className="mt-3">
             <label htmlFor="update-profile-description"
@@ -96,12 +95,14 @@ const UserForm = ({ user }) => {
               description</label>
             <textarea id="update-profile-description" name="description"
                       className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
-                      placeholder="Description">{currentUser.description || user.data.profile.description}</textarea>
+                      placeholder="Description"
+                      onChange={handleChange}
+                      value={currentUser.description || user.data.profile.description}></textarea>
           </div>
         </div>
       </div>
       <div className="mt-1">
-        <button onClick={() => handleUpdateUser()} type="submit"
+        <button onClick={handleUpdateUser} type="submit"
                 className="px-3 py-2 uppercase font-bold text-white bg-black rounded-lg hover:bg-white hover:text-black focus:outline-none active:outline-none"> Save
         </button>
       </div>

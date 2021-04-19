@@ -1,4 +1,4 @@
-import React from 'react'
+import Timestamp from 'react-timestamp'
 
 const Infobox = ({ topic }) => {
   return (
@@ -20,7 +20,7 @@ const Infobox = ({ topic }) => {
         </dt>
         <dd
           className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-          {topic.data.first_release}
+          <Timestamp date={topic.data.first_release}/>
         </dd>
       </div>
       <div
