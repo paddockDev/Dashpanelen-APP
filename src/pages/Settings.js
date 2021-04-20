@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import * as me from '../services/me'
 import ChangePhoto from '../components/Settings/ChangePhoto'
 import UserForm from '../components/Settings/UserForm'
+import Topics from '../components/Settings/Topics'
+import CreateTopic from '../components/Settings/CreateTopic'
 
 const Settings = () => {
   const [user, setUser] = useState()
@@ -70,6 +72,18 @@ const Settings = () => {
                   <ChangePhoto user={user}/>
                 </div>
               )}
+            </div>
+          </div>
+          <div className="relative rounded-md border-transparent lg:mt-5">
+            <div className="flex items-center p-5 border-b border-gray-200">
+              <h2 className="font-medium text-base mr-auto">
+                Information</h2>
+            </div>
+            <div className="p-5">
+                <div className="flex flex-col-reverse xl:flex-row flex-col">
+                  <CreateTopic/>
+                  <Topics user={user}/>
+                </div>
             </div>
           </div>
         </div>

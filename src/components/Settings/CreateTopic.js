@@ -3,7 +3,10 @@ import React, { useState } from 'react'
 import * as me from '../../services/me'
 
 const CreateTopic = () => {
-  const [insight, setInsight] = useState({})
+  const [insight, setInsight] = useState({
+    name: "",
+    is_interested: false
+  })
 
   const options = [
     {
@@ -33,9 +36,13 @@ const CreateTopic = () => {
   ]
 
   const handleChange = (e) => {
+    const target = e.target
+    const value = target && (target.type === 'checkbox' ? target.checked : target.value)
+    const name = target && target.name
+
     setInsight((prevState) => ({
         ...prevState,
-        [e.target ? e.target.name : 'state']: e.target ? e.target.value : e.value
+        [target ? name : 'state']: target ? value : e.value
       })
     )
   }
@@ -60,7 +67,7 @@ const CreateTopic = () => {
       </div>
       <div className="mt-3">
         <Select options={options} id="update-profile-languages" name="state"
-                placeholder="State"
+                placeholder={insight.state}
                 value={insight.state}
                 onChange={handleChange}/>
       </div>
@@ -69,6 +76,7 @@ const CreateTopic = () => {
           <div className="flex items-center h-5">
             <input type="checkbox" name="is_interested"
                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                   checked={insight.is_interested}
                    onChange={handleChange}/>
           </div>
           <div className="ml-3 text-sm">
